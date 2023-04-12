@@ -22,6 +22,9 @@ public class OutputStreamApp1 {
 //		out.write('나'); // 글자가 제대로 기록되지 않는다.
 //		out.write('다'); // 글자가 제대로 기록되지 않는다.
 
+		String text = "안녕하세요. 반갑습니다.";
+		byte[] bytes = text.getBytes();
+		out.write(bytes);
 		out.close();
 	}
 }
