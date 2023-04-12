@@ -11,6 +11,8 @@ public class InputStreamApp3 {
 		
 		String path = "https://ticketimage.interpark.com/Play/image/large/23/23003674_p.gif";
 		String dest = "src/sample01_inputstream/suyoung.gif";
+		
+		// 이 아래로는 반복작업이기에 util로 존재한다.
 		URL url = new URL(path);
 		InputStream in = url.openStream();
 		FileOutputStream out = new FileOutputStream(dest);
