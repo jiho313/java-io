@@ -1,6 +1,7 @@
 package sample07_bridge;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,8 +41,7 @@ public class ReaderApp {
 		// 5. 키보드 입력내용을 출력해보기
 		System.out.println("입력내용: " + text);
 		
-		
-		
+			
 		
 		
 	}

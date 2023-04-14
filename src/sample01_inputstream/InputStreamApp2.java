@@ -36,7 +36,7 @@ public class InputStreamApp2 {
 		// byte[] 배열을 이용해서 읽고 기록하기 -> 이게 훨씬 성능이 좋다.
 		byte[] buf = new byte[1024];
 		int length = 0;
-		while((length = in.read(buf)) != -1) {
+		while((length = in.read(buf)) != -1) {	//읽을 스트림(데이터)이 없을 때까지 반복 읽기, 스트림의 끝은 -1 반환
 			out.write(buf, 0, length);
 		}
 		
