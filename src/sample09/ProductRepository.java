@@ -3,6 +3,7 @@ package sample09;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,5 +53,25 @@ public class ProductRepository { // 상품정보 -> 영속화 계층 값을 달�
 			}
 		}
 		return null;
+	}
+	
+	public void save() {
+		try {
+			String path = "src/sample09/products.txt";
+			PrintWriter out = new PrintWriter(path);
+			
+			for(Product product : products) {
+				/*
+				 * products.generateText()는 Product객체의 상품 정보를
+				 * "100,맥북프로,애플,2000000,10"과 같은 문자열로 변환해서 반환한다.
+				 */
+				String text= product.generateText();
+				out.println(text);
+			}
+			out.close();
+			
+		} catch (IOException ex) {
+			throw new RuntimeException("products.txt 파일 쓰기 오류", ex);
+		}
 	}
 }

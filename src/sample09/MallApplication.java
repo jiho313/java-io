@@ -1,7 +1,10 @@
 package sample09;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import util.DateUtils;
 import util.KeyboardReader;
 
 public class MallApplication {
@@ -18,13 +21,13 @@ public class MallApplication {
 	
 	public void menu() {
 		if(loginedUser == null) {
-			System.out.println("------------------------------------------------");
+			System.out.println("--------------------------------------------------------");
 			System.out.println("1.상품조회 2.로그인 0.종료");
-			System.out.println("------------------------------------------------");
+			System.out.println("--------------------------------------------------------");
 			} else {
-			System.out.println("------------------------------------------------");
-			System.out.println("1.상품조회 2.주문하기 3.주문내역조회 4.내정보보기 0.종료");
-			System.out.println("------------------------------------------------");
+			System.out.println("--------------------------------------------------------");
+			System.out.println("1.상품조회 2.주문하기 3.주문내역조회 4.내정보보기 5.로그아웃 0.종료");
+			System.out.println("--------------------------------------------------------");
 			System.out.println("["+loginedUser.getName()+"]님 환영합니다.");
 			}
 		System.out.println();
@@ -32,27 +35,34 @@ public class MallApplication {
 		System.out.print("### 메뉴선택: ");
 		int menuNo = reader.readInt();
 		System.out.println();
-		
-		if (menuNo == 1) {
-			상품조회();
-		} else if (menuNo == 0) {
-			프로그램종료();
-		}
-		
-		if (loginedUser == null) {
-			// 비로그인 상태에서만 사용가능한 기능
-			if (menuNo == 2) {
-				로그인();
+		// 오류가 발생해도 종료되지 않도록 예외를 발생시킨다.
+		try {
+			// 로그인/비로그인 상관 없이 사용가능한 기능
+			if (menuNo == 1) {
+				상품조회();
+			} else if (menuNo == 0) {
+				프로그램종료();
 			}
-		} else {
-			// 로그인 상태에서만 사용가능한 기능
-			if (menuNo == 2) {
-				주문하기();
-			} else if (menuNo == 3) {
-				주문내역조회();
-			} else if (menuNo == 4) {
-				내정보보기();
+			
+			if (loginedUser == null) {
+				// 비로그인 상태에서만 사용가능한 기능
+				if (menuNo == 2) {
+					로그인();
+				}
+			} else {
+				// 로그인 상태에서만 사용가능한 기능
+				if (menuNo == 2) {
+					주문하기();
+				} else if (menuNo == 3) {
+					주문내역조회();
+				} else if (menuNo == 4) {
+					내정보보기();
+				} else if (menuNo == 5) {
+					 로그아웃();
+				}
 			}
+		} catch(RuntimeException ex) {
+			System.out.println("### 오류발생: " + ex.getMessage());
 		}
 		
 		System.out.println();
@@ -93,19 +103,71 @@ public class MallApplication {
 	}
 	private void 주문하기() {
 		System.out.println("<< 주문하기 >>");
+		System.out.println("상품번호, 구매수량을 입력하세요.");
+		
+		System.out.print("### 상품번호 입력: ");
+		int productNo = reader.readInt();
+		System.out.print("### 구매수량 입력: ");
+		int quantity = reader.readInt();
+		
+		service.order(productNo, quantity, loginedUser.getId());
+		
+		System.out.println("### 주문이 완료되었습니다.");
 		
 	}
 	private void 주문내역조회() {
 		System.out.println("<< 주문내역 조회하기 >>");
+		System.out.println("### 주문내역을 확인하세요");
 		
+		List<Map<String, Object>> myOders = service.getMyOrders(loginedUser.getId());
+		if (myOders.isEmpty()) {
+			System.out.println("### 주문내역이 존재하지 않습니다.");
+		} else {
+			System.out.println("------------------------------------------------");
+			System.out.println("주문번호\t주문날짜\t\t상품이름\t구매수량\t구매금액\t적립포인트");
+			System.out.println("------------------------------------------------");
+			for (Map<String, Object> item : myOders){
+				// Map에서 꺼낼 때는 원래의 타입으로 형변환
+				// Map으로 담을 때는 Object타입으로 담았기 때문
+				int orderNo = (Integer) item.get("orderNo");
+				Date orderDate = (Date) item.get("orderDate");
+				String productName = (String) item.get("productName");
+				int orderQuantity = (Integer) item.get("orderQuantity");
+				int orderPrice = (Integer) item.get("orderPrice");
+				int depositPoint = (Integer) item.get("depositPoint");
+				
+				System.out.print(orderNo + "\t");
+				System.out.print(DateUtils.toText(orderDate) + "\t");
+				System.out.print(productName + "\t");
+				System.out.print(orderQuantity + "\t");
+				System.out.print(orderPrice + "\t");
+				System.out.println(depositPoint);
+			}
+			System.out.println("------------------------------------------------");
+		}
 	}
 	
 	private void 내정보보기() {
 		System.out.println("<< 내정보 보기 >>");
+		System.out.println("### 내 정보를 확인하세요.");
 		
+		System.out.println("------------------------------------------");
+		System.out.println("사용자 아이디: " + loginedUser.getId());
+		System.out.println("사용자 이름: " + loginedUser.getName());
+		System.out.println("적립 포인트: " + loginedUser.getPoint());
+		System.out.println("------------------------------------------");
+		
+	}
+	
+	private void 로그아웃() {
+		System.out.println("<< 로그아웃 >>");
+		loginedUser = null;
+		
+		System.out.println("### 로그아웃 완료되었습니다.");
 	}
 	private void 프로그램종료() {
 		System.out.println("<< 프로그램 종료 >>");
+		service.save();
 		System.exit(0);
 	}
 	

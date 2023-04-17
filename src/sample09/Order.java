@@ -11,20 +11,20 @@ public class Order {
 	private Date date;	
 	private String userId;
 	private int productNo;
-	private int orderPrice;
 	private int quantity;
+	private int orderPrice;
 	private int depositPoint;
 	
 	public Order() {}
 
-	public Order(int no, Date date, String userId, int productNo, int orderPrice, int quantity, int depositPoint) {
+	public Order(int no, Date date, String userId, int productNo, int quantity, int orderPrice, int depositPoint) {
 		super();
 		this.no = no;
 		this.date = date;
 		this.userId = userId;
 		this.productNo = productNo;
-		this.orderPrice = orderPrice;
 		this.quantity = quantity;
+		this.orderPrice = orderPrice;
 		this.depositPoint = depositPoint;
 	}
 
@@ -52,11 +52,11 @@ public class Order {
 		this.userId = userId;
 	}
 
-	public int getProductBo() {
+	public int getProductNo() {
 		return productNo;
 	}
 
-	public void setProductBo(int productNo) {
+	public void setProductNo(int productNo) {
 		this.productNo = productNo;
 	}
 
@@ -92,17 +92,23 @@ public class Order {
 		Date date = DateUtils.toDate(values[1]);
 		String userId = values[2];
 		int productNo = Integer.parseInt(values[3]);
-		int orderPrice = Integer.parseInt(values[4]);
-		int quantity = Integer.parseInt(values[5]);
+		int quantity = Integer.parseInt(values[4]);
+		int orderPrice = Integer.parseInt(values[5]);
 		int depositPoint = Integer.parseInt(values[6]);
 		
-		return new Order(no, date, userId, productNo, orderPrice, quantity, depositPoint);
+		return new Order(no, date, userId, productNo, quantity, orderPrice, depositPoint);
 	}
 	
 	public String generateText() {
-		return MessageFormat.format("{0},{1},{2},{3},{4},{5},{6}",
-				no, DateUtils.toText(date), userId, productNo, orderPrice, quantity, depositPoint);
-	}
+	      return MessageFormat.format("{0},{1},{2},{3},{4},{5},{6}", 
+	            String.valueOf(no), 
+	            DateUtils.toText(date), 
+	            userId, 
+	            String.valueOf(productNo), 
+	            String.valueOf(quantity), 
+	            String.valueOf(orderPrice), 
+	            String.valueOf(depositPoint));
+	   }
 	
 
 }

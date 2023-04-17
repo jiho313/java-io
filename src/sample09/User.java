@@ -46,6 +46,7 @@ public class User {
 	public int getPoint() {
 		return point;
 	}
+	
 
 	public void setPoint(int point) {
 		this.point = point;
@@ -53,7 +54,7 @@ public class User {
 	
 	public static User createUser(String text) {
 		// text -> "hong,zxcv1234,홍길동,10000"
-		// values -> {"hing", "zxcv1234", "홍길동", "10000"}
+		// values -> {"hong", "zxcv1234", "홍길동", "10000"}
 		String[] values = text.split(",");
 		String id = values[0];
 		String password = values[1];
@@ -64,8 +65,11 @@ public class User {
 	}
 	
 	public String generateText() {
-		return MessageFormat.format("{0},{1},{2},{3}",
-				id, password, name, point);
-	}
+	      return MessageFormat.format("{0},{1},{2},{3}", 
+	            id, 
+	            password, 
+	            name, 
+	            String.valueOf(point));
+	   }
 	
 }
