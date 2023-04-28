@@ -3,14 +3,15 @@ package sample09;
 import java.text.MessageFormat;
 
 public class Product {
-	
+
 	private int no;
 	private String name;
 	private String maker;
 	private int price;
 	private int stock;
-	
-	public Product() {}
+
+	public Product() {
+	}
 
 	public Product(int no, String name, String maker, int price, int stock) {
 		super();
@@ -60,7 +61,7 @@ public class Product {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	
+
 	public static Product createProduct(String text) {
 		// text =
 		String[] values = text.split(",");
@@ -69,18 +70,13 @@ public class Product {
 		String maker = values[2];
 		int price = Integer.parseInt(values[3]);
 		int stock = Integer.parseInt(values[4]);
-		
+
 		return new Product(no, name, maker, price, stock);
 	}
-	
+
 	public String generateText() {
-	      return MessageFormat.format("{0},{1},{2},{3},{4}", 
-	            String.valueOf(no), 
-	            name, 
-	            maker, 
-	            String.valueOf(price), 
-	            String.valueOf(stock));
-	   }
-	
+		return MessageFormat.format("{0},{1},{2},{3},{4}", String.valueOf(no), name, maker, String.valueOf(price),
+				String.valueOf(stock));
+	}
 
 }
